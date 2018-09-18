@@ -18,7 +18,7 @@ void MyGLWidget::initializeGL ()
   // Cal inicialitzar l'ús de les funcions d'OpenGL
   initializeOpenGLFunctions();
 
-  glClearColor (1.0, 0.0, 1.0, 1.0); // defineix color de fons (d'esborrat)
+  glClearColor (0.5, 0.7, 1.0, 1.0); // defineix color de fons (d'esborrat)
   carregaShaders();
   createBuffers();
 }

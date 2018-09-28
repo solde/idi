@@ -18,7 +18,7 @@ void MyGLWidget::initializeGL ()
   // Cal inicialitzar l'ús de les funcions d'OpenGL
   initializeOpenGLFunctions();
 
-  glClearColor (0.5, 0.5, 1.0, 1.0); // defineix color de fons (d'esborrat)
+  glClearColor (0.5, 0.7, 1.0, 1.0); // defineix color de fons (d'esborrat)
   carregaShaders();
   createBuffers();
 }
@@ -50,8 +50,11 @@ void MyGLWidget::createBuffers ()
   Vertices[0] = glm::vec3(-1.0, -1.0, 0.0);
   Vertices[1] = glm::vec3(1.0, -1.0, 0.0);
   Vertices[2] = glm::vec3(0.0, 1.0, 0.0);
+
   // Creació del Vertex Array Object (VAO) que usarem per pintar
   glGenVertexArrays(1, &VAO1);
+  glBindVertexArray(VAO1);
+
   // Creació del buffer amb les dades dels vèrtexs
   GLuint VBO1;
   glGenBuffers(1, &VBO1);

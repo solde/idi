@@ -357,6 +357,7 @@ compiler_moc_header_make_all: moc_MyForm.cpp moc_MyGLWidget.cpp
 compiler_moc_header_clean:
 	-$(DEL_FILE) moc_MyForm.cpp moc_MyGLWidget.cpp
 moc_MyForm.cpp: ui_MyForm.h \
+		MyGLWidget.h \
 		MyForm.h \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
@@ -388,11 +389,13 @@ compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean compiler_ui
 ####### Compile
 
 main.o: main.cpp MyForm.h \
-		ui_MyForm.h
+		ui_MyForm.h \
+		MyGLWidget.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
 
 MyForm.o: MyForm.cpp MyForm.h \
-		ui_MyForm.h
+		ui_MyForm.h \
+		MyGLWidget.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o MyForm.o MyForm.cpp
 
 MyGLWidget.o: MyGLWidget.cpp MyGLWidget.h

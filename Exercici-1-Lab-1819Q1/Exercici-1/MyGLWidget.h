@@ -35,9 +35,8 @@ class MyGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     void modelTransformR2 ();
 
     // attribute locations
-    GLuint vertexLoc, colorLoc, transLoc, orientationLoc;
+    GLuint vertexLoc, colorLoc, transLoc;
     bool act = false, rot = false;
-    float scl = -0.5;
     
     // Program
     QOpenGLShaderProgram *program;

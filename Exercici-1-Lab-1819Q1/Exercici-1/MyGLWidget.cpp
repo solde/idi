@@ -34,31 +34,30 @@ void MyGLWidget::pintaQuadrat ()  // AQUEST MÈTODE NO ES POT MODIFICAR !!!
 void MyGLWidget::paintGL ()
 {
   if(!act){
-    glUniform1f (orientationLoc,  1.0);
+	//Pintar L gran
     glViewport (0, 0, width(), height()); // Aquesta crida no caldria perquè Qt la fa de forma automàtica amb aquests paràmetres 
     glClear (GL_COLOR_BUFFER_BIT);  // Esborrem el frame-buffer
-
+	//Modificar i pintar |
     modelTransformR1();
     pintaQuadrat ();
-
+	//Modificar i pintar _
     modelTransformR2();
     pintaQuadrat ();
   }
   else{
-
+	//Crear Viewport
     glViewport (width()/2, 0, width()/2, height()/2); // Aquesta crida no caldria perquè Qt la fa de forma automàtica amb aquests paràmetres 
     glClear (GL_COLOR_BUFFER_BIT);  // Esborrem el frame-buffer
-    
-
+	//Modificar i pintar |
     modelTransformR1();
     pintaQuadrat ();
-
+	//Modificar i pintar _
     modelTransformR2();
     pintaQuadrat ();
 
-
+	//Crear segon Viewport
     glViewport (0, height()/2, width()/2, height()/2); // Aquesta crida no caldria perquè Qt la fa de forma automàtica amb aquests paràmetres 
-    glUniform1f (orientationLoc, scl);
+    
     modelTransformR1();
     pintaQuadrat ();
 
@@ -72,6 +71,7 @@ void MyGLWidget::paintGL ()
 void MyGLWidget::modelTransformR1 () 
 {
   glm::mat4 TG (1.0);
+  if(rot) TG=glm::rotate(TG, float(M_PI), glm::vec3(0.0, 0.0, 1.0)); //Es rota la |, rot sera desactivat en la crida a a modelTransformR2()
   TG = glm::translate( TG, glm::vec3(-0.5, 0.1, 0.0) );
   TG = glm::scale( TG, glm::vec3(0.5, 2.5, 0.0) );
   glUniformMatrix4fv(transLoc, 1, GL_FALSE, &TG[0][0]);
@@ -79,7 +79,11 @@ void MyGLWidget::modelTransformR1 ()
 
 void MyGLWidget::modelTransformR2 () 
 {
-  glm::mat4 TG (1.0); 
+  glm::mat4 TG (1.0);
+  if(rot){ //La aprimera vegada que s'executi es rotara se _ i es posara rot a false.
+	rot = false; //Desactivar rot
+	TG=glm::rotate(TG, float(M_PI), glm::vec3(0.0, 0.0, 1.0)); //Rotar la figura
+  }
   TG = glm::translate(TG, glm::vec3(-0.3, -0.5, 0.0) );
   TG = glm::scale( TG, glm::vec3(1.5, 0.5, 0.0) );
   glUniformMatrix4fv(transLoc, 1, GL_FALSE, &TG[0][0]);
@@ -97,7 +101,7 @@ void MyGLWidget::keyPressEvent(QKeyEvent* event)
   switch (event->key()) {
     case Qt::Key_V: {
       act = !act;
-      rot = true;
+      if (act) rot = true;
       update();
       break;
     }
@@ -166,6 +170,4 @@ void MyGLWidget::carregaShaders()
   colorLoc = glGetAttribLocation (program->programId(), "color");
 
   transLoc = glGetUniformLocation(program->programId(),"scale");
-
-  orientationLoc = glGetUniformLocation(program->programId(),"orientation");
 }

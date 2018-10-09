@@ -22,6 +22,8 @@ void MyGLWidget::initializeGL ()
   glClearColor(0.5, 0.7, 1.0, 1.0); // defineix color de fons (d'esborrat)
   carregaShaders();
   createBuffers();
+  projectTrasnform();
+  viewTransform();
 }
 
 void MyGLWidget::paintGL () 
@@ -51,6 +53,11 @@ void MyGLWidget::modelTransform ()
   glUniformMatrix4fv(transLoc, 1, GL_FALSE, &transform[0][0]);
 }
 
+void MyGLWidget::viewTransform(){
+	glm::mat4 View = glm::lookAt (glm::vec3(0,0,1), glm::vec3(0,0,0), glm::vec3(0,1,0));
+	glUniformMatrix4fv (viewLoc, 1, GL_FALSE, &View[0][0]);	
+}
+
 void MyGLWidget::resizeGL (int w, int h) 
 {
   // Aquí anirà el codi que cal fer quan es redimensiona la finestra
@@ -71,6 +78,11 @@ void MyGLWidget::keyPressEvent(QKeyEvent* event)
     default: event->ignore(); break;
   }
   update();
+}
+
+void MyGLWidget::projectTrasnform(){
+	glm::mat4 Proj = glm::perspective (float(M_PI)/2.0, 1.0, 0.4, 3.0);
+	glUniformMatrix4fv (projLoc, 1, GL_FALSE, &Proj[0][0]);
 }
 
 void MyGLWidget::createBuffers () 
@@ -147,5 +159,8 @@ void MyGLWidget::carregaShaders()
   colorLoc = glGetAttribLocation (program->programId(), "color");
   // Uniform locations
   transLoc = glGetUniformLocation(program->programId(), "TG");
+  
+  projLoc = glGetUniformLocation(program->programId(), "proj");
+  viewLoc = glGetUniformLocation(program->programId(), "view");
 }
 

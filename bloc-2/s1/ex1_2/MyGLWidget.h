@@ -25,6 +25,10 @@ class MyGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     virtual void resizeGL (int width, int height);
     // keyPressEvent - Es cridat quan es prem una tecla
     virtual void keyPressEvent (QKeyEvent *event);
+    
+    virtual void projectTrasnform();
+    
+    virtual void viewTransform();
 
   private:
     void createBuffers ();
@@ -37,6 +41,7 @@ class MyGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     GLuint transLoc;
     // VAO names
     GLuint VAO_Casa;
+    GLuint projLoc, viewLoc;
     // Program
     QOpenGLShaderProgram *program;
     // Internal vars

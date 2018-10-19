@@ -6,6 +6,7 @@
 #include <QKeyEvent>
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
+#include "Model/model.h"
 
 class MyGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core 
 {
@@ -30,6 +31,8 @@ class MyGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     
     virtual void viewTransform();
 
+    virtual void init_cam();
+
   private:
     void createBuffers ();
     void carregaShaders ();
@@ -40,12 +43,14 @@ class MyGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     // uniform locations
     GLuint transLoc;
     // VAO names
-    GLuint VAO_Casa;
+    GLuint VAO_terra, VBO_terra_col, VBO_terra_pos, VAO_homer, VBO_homer_col, VBO_homer_pos;
     GLuint projLoc, viewLoc;
     // Program
     QOpenGLShaderProgram *program;
     // Internal vars
     float scale;
     glm::vec3 pos;
+
+    Model homer;
 };
 

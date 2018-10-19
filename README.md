@@ -79,3 +79,13 @@ v<sub>z<sub> = cos(Φ) * cos(ψ)
 v<sub>y</sub> = cos(Φ) sin(ψ)
 
 <img src="camera.png">
+
+<div class="page">
+
+# Classe 6
+
+## Introducció a la HCI i principis d'usabilitat
+
+**HCI -> Human–computer interaction**
+
+**Usabilitat** -> Habilitat la qual un producte pot ser usat per uns usuaris concrets per tal de fer unes tasques especifiques amb una finalitat, eficientment i satisfactoriament per un entorn especific.

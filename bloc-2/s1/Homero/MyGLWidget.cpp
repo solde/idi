@@ -64,10 +64,7 @@ void MyGLWidget::modelTransform ()
 	glm::mat4 transform (1.0f);
 	transform = glm::rotate(transform, angle, glm::vec3(0.0,1.0,0.0));
 	transform = glm::scale(transform, glm::vec3(scale));
-	glUniformMatrix4fv(transLoc, 1, GL_FALSE, &transform[0][0]);
-	
-	
-	
+	glUniformMatrix4fv(transLoc, 1, GL_FALSE, &transform[0][0]);	
 }
 
 void MyGLWidget::projectTransform () 

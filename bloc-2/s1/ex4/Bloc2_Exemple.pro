@@ -1,8 +1,8 @@
 TEMPLATE    = app
 QT         += opengl 
 
-INCLUDEPATH += ../../Model
-SOURCES += ../../Model/model.cpp
+INCLUDEPATH += ./Model
+SOURCES += ./Model/model.cpp
 
 INCLUDEPATH +=  /usr/include/glm
 

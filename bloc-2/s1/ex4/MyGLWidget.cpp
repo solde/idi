@@ -20,8 +20,13 @@ void MyGLWidget::initializeGL ()
   initializeOpenGLFunctions();  
 
   glClearColor(0.5, 0.7, 1.0, 1.0); // defineix color de fons (d'esborrat)
+  glEnable(GL_DEPTH_TEST);
   carregaShaders();
   createBuffers();
+  init_cam();
+}
+
+void MyGLWidget::init_cam(){
   projectTrasnform();
   viewTransform();
 }
@@ -37,19 +42,23 @@ void MyGLWidget::paintGL ()
   modelTransform ();
 
   // Activem el VAO per a pintar la caseta 
-  glBindVertexArray (VAO_Casa);
+  glBindVertexArray (VAO_homer);
 
   // pintem
-  glDrawArrays(GL_TRIANGLES, 0, 9);
+  glDrawArrays(GL_TRIANGLES, 0, homer.faces().size()*3);
+
+  glBindVertexArray (VAO_terra);
+
+  // pintem
+  glDrawArrays(GL_TRIANGLES, 0, 6);
 
   glBindVertexArray (0);
 }
 
-void MyGLWidget::modelTransform () 
+void MyGLWidget::modelTransform() 
 {
   // Matriu de transformació de model
   glm::mat4 transform (1.0f);
-  transform = glm::scale(transform, glm::vec3(scale));
   glUniformMatrix4fv(transLoc, 1, GL_FALSE, &transform[0][0]);
 }
 
@@ -87,46 +96,52 @@ void MyGLWidget::projectTrasnform(){
 
 void MyGLWidget::createBuffers () 
 {
-  // Dades de la caseta
-  // Dos VBOs, un amb posició i l'altre amb color
-  glm::vec3 posicio[9] = {
-	glm::vec3(-0.5, -1.0, -0.5),
-	glm::vec3( 0.5, -1.0, -0.5),
-	glm::vec3(-0.5,  0.0, -0.5),
-	glm::vec3(-0.5,  0.0, -0.5),
-	glm::vec3( 0.5, -1.0, -0.5),
-	glm::vec3( 0.5,  0.0, -0.5),
-	glm::vec3( 0.5,  0.0, -0.5),
-	glm::vec3( 0.0,  0.6, -0.5),
-	glm::vec3(-0.5,  0.0, -0.5)
-  }; 
-  glm::vec3 color[9] = {
-	glm::vec3(1,0,0),
-	glm::vec3(0,1,0),
-	glm::vec3(0,0,1),
-	glm::vec3(0,0,1),
-	glm::vec3(0,1,0),
-	glm::vec3(1,0,0),
-	glm::vec3(1,0,0),
-	glm::vec3(0,1,0),
-	glm::vec3(0,0,1)
+  homer.load("models/HomerProves.obj");
+  glGenVertexArrays(1, &VAO_homer);
+  glBindVertexArray(VAO_homer);
+
+  glGenBuffers(1, &VBO_homer_pos);
+  glBindBuffer(GL_ARRAY_BUFFER, VBO_homer_pos);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*homer.faces().size()*3*3, homer.VBO_vertices(), GL_STATIC_DRAW);
+
+  glVertexAttribPointer(vertexLoc, 3, GL_FLOAT, GL_FALSE, 0, 0);
+  glEnableVertexAttribArray(vertexLoc);
+  
+  glGenBuffers(1, &VBO_homer_col);
+  glBindBuffer(GL_ARRAY_BUFFER, VBO_homer_col);
+	glBufferData(GL_ARRAY_BUFFER,sizeof(GLfloat)*homer.faces().size()*3*3, homer.VBO_matdiff(), GL_STATIC_DRAW);
+
+  glVertexAttribPointer(colorLoc, 3, GL_FLOAT, GL_FALSE, 0, 0);
+	glEnableVertexAttribArray(colorLoc);
+
+  glm::vec3 pos_terra[4] = {
+    glm::vec3(-1.0, 0, -1.0),
+		glm::vec3(-1.0, 0, 1.0),
+		glm::vec3(1.0, 0, -1.0),
+		glm::vec3(1.0, 0, 1.0)
+  };
+
+  glm::vec3 col_terra[4] = {
+    glm::vec3(1,0.2,1),
+		glm::vec3(1,0.2,1),
+		glm::vec3(1,0.2,1),
+		glm::vec3(1,0.2,1)
   };
 
   // Creació del Vertex Array Object per pintar
-  glGenVertexArrays(1, &VAO_Casa);
-  glBindVertexArray(VAO_Casa);
+  glGenVertexArrays(1, &VAO_terra);
+  glBindVertexArray(VAO_terra);
 
-  GLuint VBO_Casa[2];
-  glGenBuffers(2, VBO_Casa);
-  glBindBuffer(GL_ARRAY_BUFFER, VBO_Casa[0]);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(posicio), posicio, GL_STATIC_DRAW);
+  glGenBuffers(1, &VBO_terra_pos);
+  glBindBuffer(GL_ARRAY_BUFFER, VBO_terra_pos);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(pos_terra), pos_terra, GL_STATIC_DRAW);
 
   // Activem l'atribut vertexLoc
   glVertexAttribPointer(vertexLoc, 3, GL_FLOAT, GL_FALSE, 0, 0);
   glEnableVertexAttribArray(vertexLoc);
 
-  glBindBuffer(GL_ARRAY_BUFFER, VBO_Casa[1]);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(color), color, GL_STATIC_DRAW);
+  glBindBuffer(GL_ARRAY_BUFFER, VBO_terra_col);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(col_terra), col_terra, GL_STATIC_DRAW);
 
   // Activem l'atribut colorLoc
   glVertexAttribPointer(colorLoc, 3, GL_FLOAT, GL_FALSE, 0, 0);

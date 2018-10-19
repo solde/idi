@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'MyForm.ui'
 **
-** Created by: Qt User Interface Compiler version 5.6.2
+** Created by: Qt User Interface Compiler version 4.8.7
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -10,15 +10,15 @@
 #define UI_MYFORM_H
 
 #include <QtCore/QVariant>
-#include <QtWidgets/QAction>
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QButtonGroup>
-#include <QtWidgets/QHBoxLayout>
-#include <QtWidgets/QHeaderView>
-#include <QtWidgets/QPushButton>
-#include <QtWidgets/QSpacerItem>
-#include <QtWidgets/QVBoxLayout>
-#include <QtWidgets/QWidget>
+#include <QtGui/QAction>
+#include <QtGui/QApplication>
+#include <QtGui/QButtonGroup>
+#include <QtGui/QHBoxLayout>
+#include <QtGui/QHeaderView>
+#include <QtGui/QPushButton>
+#include <QtGui/QSpacerItem>
+#include <QtGui/QVBoxLayout>
+#include <QtGui/QWidget>
 #include "MyGLWidget.h"
 
 QT_BEGIN_NAMESPACE
@@ -35,12 +35,12 @@ public:
     void setupUi(QWidget *MyForm)
     {
         if (MyForm->objectName().isEmpty())
-            MyForm->setObjectName(QStringLiteral("MyForm"));
+            MyForm->setObjectName(QString::fromUtf8("MyForm"));
         MyForm->resize(819, 726);
         horizontalLayout = new QHBoxLayout(MyForm);
-        horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
+        horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
         widget = new MyGLWidget(MyForm);
-        widget->setObjectName(QStringLiteral("widget"));
+        widget->setObjectName(QString::fromUtf8("widget"));
         QSizePolicy sizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
@@ -50,13 +50,13 @@ public:
         horizontalLayout->addWidget(widget);
 
         verticalLayout = new QVBoxLayout();
-        verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
+        verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
         verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
         verticalLayout->addItem(verticalSpacer);
 
         pushButton = new QPushButton(MyForm);
-        pushButton->setObjectName(QStringLiteral("pushButton"));
+        pushButton->setObjectName(QString::fromUtf8("pushButton"));
         QSizePolicy sizePolicy1(QSizePolicy::Fixed, QSizePolicy::Fixed);
         sizePolicy1.setHorizontalStretch(0);
         sizePolicy1.setVerticalStretch(0);
@@ -77,8 +77,8 @@ public:
 
     void retranslateUi(QWidget *MyForm)
     {
-        MyForm->setWindowTitle(QApplication::translate("MyForm", "Form", 0));
-        pushButton->setText(QApplication::translate("MyForm", "&Sortir", 0));
+        MyForm->setWindowTitle(QApplication::translate("MyForm", "Form", 0, QApplication::UnicodeUTF8));
+        pushButton->setText(QApplication::translate("MyForm", "&Sortir", 0, QApplication::UnicodeUTF8));
     } // retranslateUi
 
 };

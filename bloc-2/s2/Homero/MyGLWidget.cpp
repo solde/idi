@@ -90,11 +90,11 @@ void MyGLWidget::keyPressEvent(QKeyEvent* event)
 	switch (event->key()) 
 	{
 		case Qt::Key_S: { // escalar a més gran
-			scale += 0.05;
+			if(scale+ 0.05 < 2.15) scale += 0.05;
 			break;
 		}
 		case Qt::Key_D: { // escalar a més petit
-			scale -= 0.05;
+			if(scale - 0.05 >= 0) scale -= 0.05;
 			break;
 		}
 		case Qt::Key_R: { // escalar a més petit

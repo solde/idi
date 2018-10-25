@@ -89,3 +89,39 @@ v<sub>y</sub> = cos(Φ) sin(ψ)
 **HCI -> Human–computer interaction**
 
 **Usabilitat** -> Habilitat la qual un producte pot ser usat per uns usuaris concrets per tal de fer unes tasques especifiques amb una finalitat, eficientment i satisfactoriament per un entorn especific.
+
+### HCI - Desktop PC
+
+>Gran pantalla
+
+>Mouse
+
+>Teclat
+
+### HCI - Mobile systems
+
+#### Móbils
+
+>Més petits
+
+>Tactil/stylus
+
+>Sense teclat
+
+>Limitacions de software
+
+#### Tablets
+
+>Més grans
+
+>Tactil/stylus
+
+>Sense teclat
+
+>Limitacions de software
+
+## Principis de diseny
+
+[Documentació](https://asktog.com/atc/principles-of-interaction-design/)
+
+Coses que estan a les transpas i que es resumeixen en fer les coses be i de manera moni.

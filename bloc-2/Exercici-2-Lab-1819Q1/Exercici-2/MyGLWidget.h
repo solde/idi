@@ -39,6 +39,7 @@ class MyGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     void modelTransformPatricio ();
     void calculaCapsaModel ();
     void iniCamera ();
+    void CalcR();
 
     // VAO i VBO names
     GLuint VAO_Patr;
@@ -50,14 +51,16 @@ class MyGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     // attribute locations
     GLuint vertexLoc, colorLoc;
 
-    glm::vec3 VRP, OBS, UP;
+    float O, Y;
+    float d, r;
 
-    glm::vec3 Pmin(0.0, 0.0, 0.0);
-    glm::vec3 Pmax(4.0, 2.0, 3.5)
+    glm::vec3 amin, amax, acen;
 
-    float FOV, RA, Zn, Zf;
-    float radi;
-    float P, T, aP, aT, r;
+    float FOV, ra, zn, zf;
+
+    glm::vec3 VRP, UP, OBS;
+
+    bool cam;
 
     // model
     Model patr;

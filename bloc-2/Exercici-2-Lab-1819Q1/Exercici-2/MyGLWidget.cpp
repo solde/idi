@@ -17,6 +17,7 @@ void MyGLWidget::initializeGL ()
 {
 	// Cal inicialitzar l'ús de les funcions d'OpenGL
 	initializeOpenGLFunctions();  
+
 	glClearColor(0.5, 0.7, 1.0, 1.0); // defineix color de fons (d'esborrat)
 	glEnable(GL_DEPTH_TEST);
 	carregaShaders();
@@ -25,19 +26,26 @@ void MyGLWidget::initializeGL ()
 	iniCamera ();
 }
 
+void MyGLWidget::CalcR(){
+	amin = glm::vec3(0,0,0);
+	amax = glm::vec3(5,2,5);
+
+	acen = glm::vec3( ((amin[0]+amax[0])/2) , ((amin[1]+amax[1])/2) , ((amin[2]+amax[2])/2) );
+
+	r = sqrt( ((acen[0]+amax[0])/2)*((acen[0]+amax[0])/2) + ((acen[1]+amax[1])/2)*((acen[1]+amax[1])/2) + ((acen[2]+amax[2])/2)*((acen[2]+amax[2])/2));
+}
+
 void MyGLWidget::iniCamera ()
 {
-	float d = radi*2;
-	FOV = 2*asin(radi/d);
-	RA = 1.0;
-	Zn = d - radi;
-	Zf = radi + d;
-	VRP = glm::vec3(0.0,0.0,0.0);
-	OBS = VRP + d * glm::vec3(0.0, 0.0, 1.0);
-	UP = glm::vec3(0.0, 0.0, 1.0);
+	UP = glm::vec3(0.0, 1.0, 0.0);
+	cam = true;
+	CalcR();
+	d = r*2;
+	ra = 1.0;
+	VRP = acen;
 	projectTransform ();
-	T = M_PI/4.0;
-	P = M_PI/9.0;
+	O = M_PI/9.0;
+	Y = M_PI/4.0;
 	viewTransform ();
 }
 
@@ -65,14 +73,12 @@ void MyGLWidget::paintGL ()
 	glBindVertexArray(0);
 }
 
-void MyGLWidget::resizeGL (int w, int h) 
-{
+void MyGLWidget::resizeGL (int w, int h){
 	glViewport(0, 0, w, h);
-	double RAv = double(w)/double(h);
-	RA = RAv;
-	if(RAv < 1.0) 
-		FOV = 2.0*atan(tan((double)M_PI/4)/RAv);
-	projectTransform();
+    float new_ra = float (w) / float (h);
+    ra = new_ra;
+    if(new_ra < 1.0) FOV = 2.0*atan(tan((float)M_PI/4)/new_ra);
+    projectTransform();
 }
 
 void MyGLWidget::modelTransformPatricio ()
@@ -94,20 +100,33 @@ void MyGLWidget::modelTransformTerra ()
 void MyGLWidget::projectTransform ()
 {
 	glm::mat4 Proj;  // Matriu de projecció
-	Proj = glm::perspective(float(M_PI/3.0), 1.0f, 2.0f, 8.0f);
-
+	if(cam) {
+		zn = d-r;
+		zf = r+d;
+		FOV = 2*asin(r/d);}
+	else{
+		zn = 0.1;
+		zf = 10.0; 
+		FOV = M_PI/2;
+	}
+	Proj = glm::perspective(FOV, ra, zn, zf);
+	
 	glUniformMatrix4fv (projLoc, 1, GL_FALSE, &Proj[0][0]);
 }
 
 void MyGLWidget::viewTransform ()
 {
-	glm::mat4 View (1.0f);  // Matriu de posició i orientació
-	View = glm::translate( View, glm::vec3( -0,-0, -(radi*1.5) ) );
-	View = glm::translate(View, -VRP);
-
-	View = glm::rotate(View, P, glm::vec3(0.0,1.0,0.0));
-    View = glm::rotate(View, T, glm::vec3(1.0,0.0,0.0));
-
+	glm::mat4 View;  // Matriu de posició i orientació
+	//View = glm::lookAt(glm::vec3(2.5, 1.0, 6.5),glm::vec3(2.5, 1.0, 2.5),glm::vec3(0, 1, 0));
+	if(cam){
+		View = glm::translate(glm::mat4(1.0f), glm::vec3(0.0 , 0.0, -d));
+		View = glm::rotate(View, O,glm::vec3(1,0,0));
+		View= glm::rotate(View, -Y,glm::vec3(0,1,0));
+		View = glm::translate(View, -acen);;
+	}
+	else{
+		View = glm::lookAt(OBS, VRP , UP);
+	}
 	glUniformMatrix4fv (viewLoc, 1, GL_FALSE, &View[0][0]);
 }
 
@@ -246,33 +265,33 @@ void MyGLWidget::keyPressEvent(QKeyEvent* event)
 	makeCurrent();
 	switch (event->key()) {
 		case Qt::Key_1: { 
-			// aquesta tecla ha de canviar de càmera i posar la càmera 1 de 1ª persona
-
+			cam = false;
+			OBS = glm::vec3(5.0, 1.0, 5.0);
 			break;
 		}
 		case Qt::Key_2: { 
-			// aquesta tecla ha de canviar de càmera i posar la càmera 2 de 1ª persona
-
+			cam = false;
+			OBS = glm::vec3(5.0, 1.0, 0.0);
 			break;
 		}
 		case Qt::Key_3: { 
-			// aquesta tecla ha de canviar de càmera i posar la càmera 3 de 1ª persona
-
+			cam = false;
+			OBS = glm::vec3(0.0, 1.0, 0.0);
 			break;
 		}
 		case Qt::Key_4: { 
-			// aquesta tecla ha de canviar de càmera i posar la càmera 4 de 1ª persona
-
+			cam = false;
+			OBS = glm::vec3(0.0, 1.0, 5.0);
 			break;
 		}
 		case Qt::Key_0: { 
-			// aquesta tecla ha de fer que la càmera sigui la càmera en 3ª persona 
-			// amb els paràmetres inicials
-
+			cam = true;
 			break;
 		}
 		default: event->ignore(); break;
 	}
+	projectTransform();
+	viewTransform();
 	update();
 }
 

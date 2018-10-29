@@ -125,3 +125,7 @@ v<sub>y</sub> = cos(Φ) sin(ψ)
 [Documentació](https://asktog.com/atc/principles-of-interaction-design/)
 
 Coses que estan a les transpas i que es resumeixen en fer les coses be i de manera moni.
+
+## Coses de color
+
+Tu tio tens a la Carla, pregunta i ja. A més esta toh wena

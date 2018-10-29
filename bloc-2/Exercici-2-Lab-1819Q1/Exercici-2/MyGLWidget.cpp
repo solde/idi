@@ -28,7 +28,7 @@ void MyGLWidget::initializeGL ()
 
 void MyGLWidget::CalcR(){
 	amin = glm::vec3(0,0,0);
-	amax = glm::vec3(5,2,5);
+	amax = glm::vec3(4,2,3.5);
 
 	acen = glm::vec3( ((amin[0]+amax[0])/2) , ((amin[1]+amax[1])/2) , ((amin[2]+amax[2])/2) );
 

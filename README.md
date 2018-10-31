@@ -126,6 +126,30 @@ v<sub>y</sub> = cos(Φ) sin(ψ)
 
 Coses que estan a les transpas i que es resumeixen en fer les coses be i de manera moni.
 
-## Coses de color
+## Cosa de color
 
-Tu tio tens a la Carla, pregunta i ja. A més esta toh wena
+Tu tio tens a la Carla, pregunta i ja. A més esta toh wena.
+
+## Cosa de llum
+
+### Model empíric ambient
+
+És el més cutre, la llum arriba la llum igual per tots els costats.
+
+>   **I<sub>λ</sub>(P) = I<sub>aλ</sub> · k<sub>aλ</sub>** on:
+>
+>   **I<sub>aλ</sub>** és el color de la llum ambient.
+>
+>   **k<sub>aλ</sub>** és el coeficient de reflexció.
+
+### Model de Lambert
+
+Aquest ja no es tant cutre, mira per on li arriba la llum.
+
+>   **I<sub>λ</sub>(P) = I<sub>fλ</sub>·k<sub>dλ</sub> cos(Φ)** amb Φ > 90° on:
+> 
+>   **I<sub>fλ</sub>** és el color de la llum del focus puntual f.
+>
+>   **k<sub>dλ</sub>** és el coeficient de relexió difusa del material.
+>
+>   **Φ** és el l'angle entre el raig de llum incident i el vector normal de la superfície en el punt P.

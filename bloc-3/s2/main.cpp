@@ -1,11 +1,10 @@
-#include "mainwindow.h"
 #include <QApplication>
+#include "MyLabel.hpp"
 
-int main(int argc, char *argv[])
+int main(int argc, char **argv)
 {
-    QApplication a(argc, argv);
-    MainWindow w;
-    w.show();
-
-    return a.exec();
+	QApplication app(argc, argv);
+	MyLabel 4form;
+	form.show();
+	return app.exec();
 }

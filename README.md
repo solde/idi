@@ -10,18 +10,32 @@
     }
     h3{
         font-weight: bold;
-        font-size: 15px;
     }
     img {
-        width: 100%;
         height: auto;
+        width: 100%;
     }
     note {
         font-weight: lighter;
+        background-color: rgba(100, 100, 100, 0.3);
+        font-style: italic;
     }
     p{
         text-align: justify;
     }
+    img{
+        width: 100%;
+        height: auto;
+    }
+    .center{
+        width: 50%;
+        height: auto;
+        margin-left: auto;
+        margin-right: auto;
+    }
+	module{
+		border-top: 1px solid;
+	}
 </style>
 
 # Classe 5
@@ -50,13 +64,13 @@ cmax=(xmax, ymax, zmax)
 
 * Modificar l'angle d'obertura (mantenint la ra).
  
-        modificar window en ortogonal.
+		modificar window en ortogonal.
 * Modificar la distancia entre l'observador i el VRP.
  
-        Modificar ZN i ZF.
+		Modificar ZN i ZF.
 * Modificar l'observador i el VRP en la direcci-o -v (aka travelling).
 
-<img src="zoom.png">
+<img src="img/zoom.png">
 
 ## Moure càmera en tercera persona
 ### MODE INSPECCIÓ
@@ -78,7 +92,7 @@ v<sub>z<sub> = cos(Φ) * cos(ψ)
 
 v<sub>y</sub> = cos(Φ) sin(ψ)
 
-<img src="camera.png">
+<img src="img/camera.png">
 
 <div class="page">
 
@@ -128,7 +142,7 @@ Coses que estan a les transpas i que es resumeixen en fer les coses be i de mane
 
 ## Cosa de color
 
-Tu tio tens a la Carla, pregunta i ja. A més esta toh wena.
+Tu tio tens a la Carla, pregunta i ja. A més està toh wena.
 
 ## Cosa de llum
 
@@ -153,3 +167,44 @@ Aquest ja no es tant cutre, mira per on li arriba la llum.
 >   **k<sub>dλ</sub>** és el coeficient de relexió difusa del material.
 >
 >   **Φ** és el l'angle entre el raig de llum incident i el vector normal de la superfície en el punt P.
+
+### Model de Phong
+
+Aquest ja no es tant cutre, mira per on li arriba la llum.
+
+>   **I<sub>λ</sub>(P) = I<sub>fλ</sub>·k<sub>dλ</sub> cos<sup>n</sup>(α)** amb Φ < 90° on:
+> 
+>   **I<sub>fλ</sub>** és el color de la llum del focus puntual f.
+>
+>   **k<sub>dλ</sub>** és el coeficient de relexió difusa del material.
+>
+>   **α** és el l'angle entre el raig de llum incident i el vector normal de la superfície en el punt P.
+>   **n** és l'exponent de reflexió especular [(mirall)](https://mdlc.iec.cat/results.asp?txtEntrada=especular&operEntrada=0)
+
+### Calcul del color
+
+>   **Iλ(P) = I<sub>aλ</sub> * k<sub>aλ</sub> + Σi (I<sub>fiλ</sub> k<sub>dλ</sub> cos(Φ<sub>i</sub>)) + Σi (I<sub>fiλ</sub> K<sub>sλ</sub> cos<sup>n</sup>
+(α<sub>i</sub>))**
+
+## Models d'il·luminació
+
+Simulen les lleis físiques que determinen el color d'un punt.
+
+* Models locals (els que ja hem vist)
+* Models globals (Ray tracing, radiositat)
+
+### Procés de visualtizació
+
+#### Càlcul del color en el Vèrtex
+
+<img src="img/col_vex.png">
+
+>   I<sub>a</sub> = | <module>posF<sub>A</sub></module> - <module>V<sub>A</sub></module> |
+>
+>   V<sub>visió<sub>A</sub></sub> = | Pos<sub>obs<sub>A</sub></sub> -  <module>V<sub>A</sub></module> |
+>
+>   Pos<sub>Obs<sub>O</sub></sub> = (0, 0, 0)
+
+#### Càlcul del color en el Fragment
+
+<img src="img/col_frg.png">

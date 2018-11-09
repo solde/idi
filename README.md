@@ -186,6 +186,10 @@ Aquest ja no es tant cutre, mira per on li arriba la llum.
 >   **Iλ(P) = I<sub>aλ</sub> * k<sub>aλ</sub> + Σi (I<sub>fiλ</sub> k<sub>dλ</sub> cos(Φ<sub>i</sub>)) + Σi (I<sub>fiλ</sub> K<sub>sλ</sub> cos<sup>n</sup>
 (α<sub>i</sub>))**
 
+<div class="page">
+
+# Classe 7
+
 ## Models d'il·luminació
 
 Simulen les lleis físiques que determinen el color d'un punt.

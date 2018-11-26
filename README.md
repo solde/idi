@@ -33,6 +33,10 @@
         margin-left: auto;
         margin-right: auto;
     }
+    .mini{
+        width: 40%;
+        height: auto;
+    }
 	module{
 		border-top: 1px solid;
 	}
@@ -212,3 +216,43 @@ Simulen les lleis físiques que determinen el color d'un punt.
 #### Càlcul del color en el Fragment
 
 <img src="img/col_frg.png">
+
+# Classe 8
+
+## Diseny d'interacció i evaluació
+
+### Incerteses
+
+La incertesa de rebre un cert simbol es log<sub>2</sub>(M), si cada simbol te les mateixes provabilitats d'apareixer.
+
+Si no son equiprovables és:
+
+<img class="mini" src="img/incertesa.png">
+
+<div class="page">~~~~
+
+# Classe 9
+
+## Fitts' law in ui design
+
+> MT = a + b·log<sub>2</sub>((D/W)+1)
+
+Posar les coses als edges de la pantalla fa que sigui molt mes facil clicar. W tandeix a ∞
+
+## Crossing
+
+Les interficies crossin-bassed és mes rapid (o igual) que el pointing-based
+
+El rati d'errors és més baix.
+
+## Steering
+
+Multiples crossing creant un path. IDK
+
+Es fan servir amb cose de dibuix
+
+> T<sub>s</sub> = a+b·∫(ds/W(s))
+
+## Pointing devices
+
+>       "El problea d'agafr stylus es que l'has de deixar"

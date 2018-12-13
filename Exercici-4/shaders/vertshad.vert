@@ -8,6 +8,10 @@ in vec3 matdiff;
 in vec3 matspec;
 in float matshin;
 
+out vec3 normalSCOF;
+out vec3 LF;
+out vec4 vertSCOF;
+
 out vec3 matambF;
 out vec3 matdiffF;
 out vec3 matspecF;
@@ -20,13 +24,15 @@ uniform mat4 TG;
 // Valors per als components que necessitem dels focus de llum
 vec3 colFocus = vec3(0.8, 0.8, 0.8);
 vec3 llumAmbient = vec3(0.2, 0.2, 0.2);
-vec3 posFocus = vec3(1, 1, 1);  // en SCA
+vec3 posFocus = vec3(1, 0, 1);  // en SCA
 
 out vec3 fcolor;
 
 vec3 Lambert (vec3 NormSCO, vec3 L) 
 {
     // S'assumeix que els vectors que es reben com a paràmetres estan normalitzats
+
+
 
     // Inicialitzem color a component ambient
     vec3 colRes = llumAmbient * matamb;
@@ -61,10 +67,21 @@ vec3 Phong (vec3 NormSCO, vec3 L, vec4 vertSCO)
 
 void main()
 {	
-  matambF = matamb;
-  matdiffF = matdiff;
-  matspecF = matspec;
-  matshinF = matshin;
-  fcolor = matdiff;
-  gl_Position = proj * view * TG * vec4 (vertex, 1.0);
+
+    vec4 vertSCO = (view * TG * vec4 (vertex, 1.0));              //SCO
+    mat3 normalMatrix = inverse (transpose (mat3 (view * TG)));   //
+    vec3 normalSCO =  normalize(normalMatrix * normal);
+    vec4 focusSCO = vec4(posFocus,1.0);                    // punt de llum a l'escena
+    vec3 L = normalize(focusSCO.xyz - vertSCO.xyz);
+
+    vertSCOF = vertSCO;
+    LF = L;
+    normalSCOF = normalSCO;
+
+    matambF = matamb;
+    matdiffF = matdiff;
+    matspecF = matspec;
+    matshinF = matshin;
+
+    gl_Position = proj * view * TG * vec4 (vertex, 1.0);
 }

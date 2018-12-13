@@ -3,6 +3,10 @@
 in vec3 fcolor;
 out vec4 FragColor;
 
+in vec3 normalSCOF;
+in vec3 LF;
+in vec4 vertSCOF;
+
 in vec3 matambF;
 in vec3 matdiffF;
 in vec3 matspecF;
@@ -15,6 +19,8 @@ vec3 posFocus = vec3(1, 0, 1);  // en SCA
 vec3 Lambert (vec3 NormSCO, vec3 L) 
 {
     // S'assumeix que els vectors que es reben com a paràmetres estan normalitzats
+
+
 
     // Inicialitzem color a component ambient
     vec3 colRes = llumAmbient * matambF;
@@ -49,16 +55,5 @@ vec3 Phong (vec3 NormSCO, vec3 L, vec4 vertSCO)
 
 void main()
 {	
-	FragColor = vec4(matdiffF,1);
-	gl_Position = proj* view * TG * vec4(vertex, 1.0);
-	
-	vec4 L = view * TG * vec4(vertex, 1.0);
-	
-	vec4 posFocusNormal = vec4(posFocus, 1.0);
-	L = posFocusNormal - L;
-	
-	mat3 NormalMatrix = inverse(transpose(mat3(view*TG)));
-	vec3 NormSCO = normalize(NormalMatrix*normal);
-	
-	FragColor = vec4(Phong(NormSCO, normalize(L.xyz), vec4(vertex, 1.0)), 1);
+	FragColor = vec4(Phong(normalSCOF, LF, vertSCOF),1);	
 }

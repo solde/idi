@@ -8,6 +8,15 @@ in vec3 matdiff;
 in vec3 matspec;
 in float matshin;
 
+out vec3 normalSCOF;
+out vec3 LF;
+out vec4 vertSCOF;
+
+out vec3 matambF;
+out vec3 matdiffF;
+out vec3 matspecF;
+out float matshinF;
+
 uniform mat4 proj;
 uniform mat4 view;
 uniform mat4 TG;
@@ -63,10 +72,16 @@ void main()
     mat3 normalMatrix = inverse (transpose (mat3 (view * TG)));   //
     vec3 normalSCO =  normalize(normalMatrix * normal);
     vec4 focusSCO = view * vec4(posFocus,1.0);                    // punt de llum a l'escena
-    //vec4 focusSCO = vec4(posFocus,1.0);                         // punt de llum a la cam
     vec3 L = normalize(focusSCO.xyz - vertSCO.xyz);
 
-    fcolor = Lambert(normalSCO, L);
-    //fcolor = Phong(normalSCO, L, vertSCO);
+    vertSCOF = vertSCO;
+    LF = L;
+    normalSCOF = normalSCO;
+
+    matambF = matamb;
+    matdiffF = matdiff;
+    matspecF = matspec;
+    matshinF = matshin;
+
     gl_Position = proj * view * TG * vec4 (vertex, 1.0);
 }

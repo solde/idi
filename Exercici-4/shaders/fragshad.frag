@@ -10,7 +10,7 @@ in float matshinF;
 
 vec3 colFocus = vec3(0.8, 0.8, 0.8);
 vec3 llumAmbient = vec3(0.2, 0.2, 0.2);
-vec3 posFocus = vec3(1, 1, 1);  // en SCA
+vec3 posFocus = vec3(1, 0, 1);  // en SCA
 
 vec3 Lambert (vec3 NormSCO, vec3 L) 
 {
@@ -43,11 +43,22 @@ vec3 Phong (vec3 NormSCO, vec3 L, vec4 vertSCO)
       return colRes;  // no hi ha component especular
     
     // Afegim la component especular
-    float shine = pow(max(0.0, dot(R, V)), matshin);
+    float shine = pow(max(0.0, dot(R, V)), matshinF);
     return (colRes + matspecF * colFocus * shine); 
 }
 
 void main()
 {	
-	FragColor = vec4(fcolor,1);	
+	FragColor = vec4(matdiffF,1);
+	gl_Position = proj* view * TG * vec4(vertex, 1.0);
+	
+	vec4 L = view * TG * vec4(vertex, 1.0);
+	
+	vec4 posFocusNormal = vec4(posFocus, 1.0);
+	L = posFocusNormal - L;
+	
+	mat3 NormalMatrix = inverse(transpose(mat3(view*TG)));
+	vec3 NormSCO = normalize(NormalMatrix*normal);
+	
+	FragColor = vec4(Phong(NormSCO, normalize(L.xyz), vec4(vertex, 1.0)), 1);
 }

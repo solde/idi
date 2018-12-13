@@ -35,39 +35,43 @@ class MyGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     virtual void mouseMoveEvent (QMouseEvent *event);
 
   private:
-    void createBuffers ();
+    void createBuffersModel ();
+    void createBuffersTerraIParet ();
     void carregaShaders ();
+    void iniEscena ();
+    void iniCamera ();
     void projectTransform ();
     void viewTransform ();
     void modelTransformTerra ();
-    void modelTransformPatricio ();
+    void modelTransformModel1 ();
+    void modelTransformModel2 ();
     void calculaCapsaModel ();
 
-    // VAO i VBO names
-    GLuint VAO_Patr, VBO_PatrPos, VBO_PatrNorm, VBO_PatrMatamb, VBO_PatrMatdiff, VBO_PatrMatspec, VBO_PatrMatshin;
-    GLuint VAO_Terra, VBO_TerraPos, VBO_TerraNorm, VBO_TerraMatamb, VBO_TerraMatdiff, VBO_TerraMatspec, VBO_TerraMatshin;
+    // VAO names
+    GLuint VAO_Patr;
+    GLuint VAO_Terra;
     // Program
     QOpenGLShaderProgram *program;
     // uniform locations
-    GLuint transLoc, projLoc, viewLoc, posFocusLoc, colFocusLoc, llumAmbLoc;
+    GLuint transLoc, projLoc, viewLoc;
     // attribute locations
     GLuint vertexLoc, normalLoc, matambLoc, matdiffLoc, matspecLoc, matshinLoc;
 
     // model
     Model patr;
     // paràmetres calculats a partir de la capsa contenidora del model
-    glm::vec3 centrePatr;
-    float escala;
+    glm::vec3 centreBasePatr;
+    float escala1, escala2;
     // radi de l'escena
     float radiEsc;
 
     typedef  enum {NONE, ROTATE} InteractiveAction;
     InteractiveAction DoingInteractive;
     int xClick, yClick;
+
+    float FOV = float(M_PI/3.0), ra = 1.0f, zn, zf;
+
     float angleY;
     bool perspectiva;
-    glm::vec3 posicioFocus;
-    glm::mat4 View;  // Matriu de posició i orientació
-    glm::vec4 focusSCO;
 };
 

@@ -35,21 +35,25 @@ class MyGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     virtual void mouseMoveEvent (QMouseEvent *event);
 
   private:
-    void createBuffers ();
+    void createBuffersPatricio ();
+    void createBuffersTerraIParet ();
     void carregaShaders ();
+    void iniEscena ();
+    void iniCamera ();
     void projectTransform ();
     void viewTransform ();
     void modelTransformTerra ();
     void modelTransformPatricio ();
+    void modelTransformPatricio2();
     void calculaCapsaModel ();
 
     // VAO i VBO names
-    GLuint VAO_Patr, VBO_PatrPos, VBO_PatrNorm, VBO_PatrMatamb, VBO_PatrMatdiff, VBO_PatrMatspec, VBO_PatrMatshin;
-    GLuint VAO_Terra, VBO_TerraPos, VBO_TerraNorm, VBO_TerraMatamb, VBO_TerraMatdiff, VBO_TerraMatspec, VBO_TerraMatshin;
+    GLuint VAO_Patr;
+    GLuint VAO_Terra;
     // Program
     QOpenGLShaderProgram *program;
     // uniform locations
-    GLuint transLoc, projLoc, viewLoc, posFocusLoc, colFocusLoc, llumAmbLoc;
+    GLuint transLoc, projLoc, viewLoc;
     // attribute locations
     GLuint vertexLoc, normalLoc, matambLoc, matdiffLoc, matspecLoc, matshinLoc;
 
@@ -66,8 +70,6 @@ class MyGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     int xClick, yClick;
     float angleY;
     bool perspectiva;
-    glm::vec3 posicioFocus;
-    glm::mat4 View;  // Matriu de posició i orientació
-    glm::vec4 focusSCO;
+    float FOV = M_PI/3.0, ra = 1.0, zn, zf; 
 };
 

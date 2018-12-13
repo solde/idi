@@ -53,14 +53,15 @@ class MyGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     // Program
     QOpenGLShaderProgram *program;
     // uniform locations
-    GLuint transLoc, projLoc, viewLoc;
+    GLuint transLoc, projLoc, viewLoc, camLoc;
     // attribute locations
-    GLuint vertexLoc, normalLoc, matambLoc, matdiffLoc, matspecLoc, matshinLoc;
+    GLuint vertexLoc, normalLoc, matambLoc, matdiffLoc, matspecLoc, matshinLoc, posFocus1Loc, posFocus2Loc;
 
     // model
     Model patr;
     // paràmetres calculats a partir de la capsa contenidora del model
     glm::vec3 centreBasePatr;
+    glm::vec3 posPatricio1, posPatricio2;
     float escala1, escala2;
     // radi de l'escena
     float radiEsc;
@@ -70,6 +71,10 @@ class MyGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     int xClick, yClick;
 
     float FOV = float(M_PI/3.0), ra = 1.0f, zn, zf;
+    
+    int idFocus = 0;
+    
+    int left, bottom, right, top;
 
     float angleY;
     bool perspectiva;

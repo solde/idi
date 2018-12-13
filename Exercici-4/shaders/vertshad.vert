@@ -20,11 +20,13 @@ out float matshinF;
 uniform mat4 proj;
 uniform mat4 view;
 uniform mat4 TG;
+uniform int cam;
 
 // Valors per als components que necessitem dels focus de llum
 vec3 colFocus = vec3(0.8, 0.8, 0.8);
 vec3 llumAmbient = vec3(0.2, 0.2, 0.2);
-vec3 posFocus = vec3(1, 0, 1);  // en SCA
+uniform vec3 posFocus1;
+uniform vec3 posFocus2;
 
 out vec3 fcolor;
 
@@ -71,7 +73,16 @@ void main()
     vec4 vertSCO = (view * TG * vec4 (vertex, 1.0));              //SCO
     mat3 normalMatrix = inverse (transpose (mat3 (view * TG)));   //
     vec3 normalSCO =  normalize(normalMatrix * normal);
-    vec4 focusSCO = vec4(posFocus,1.0);                    // punt de llum a l'escena
+    vec4 focusSCO;
+    if(cam == 1){
+		focusSCO = view * vec4(posFocus1,1.0);                    // punt de llum a l'escena
+	}
+    if(cam == 2){
+		focusSCO = view * vec4(posFocus2,1.0); 
+	}
+    if(cam == 0){
+		focusSCO = vec4(posFocus1,1.0);
+	}
     vec3 L = normalize(focusSCO.xyz - vertSCO.xyz);
 
     vertSCOF = vertSCO;

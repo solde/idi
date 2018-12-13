@@ -32,6 +32,8 @@ void MyGLWidget::initializeGL ()
 
 void MyGLWidget::iniEscena ()
 {
+  posPatricio1 = glm::vec3(-1.5, -2.0, 1.5);
+  posPatricio2 = glm::vec3(1.5, -2.0, 1.5);
   radiEsc = sqrt(12);  // sqrt(4+4+4)
 }
 
@@ -85,11 +87,21 @@ void MyGLWidget::paintGL ()
 
 void MyGLWidget::resizeGL (int w, int h) 
 {
-  glViewport(0, 0, w, h);
-  float new_ra = float (w) / float (h);
-  ra = new_ra;
-  if(new_ra < 1.0) FOV = 2.0*atan(tan((float)M_PI/4)/new_ra);
-  projectTransform();
+  if(perspectiva){
+    glViewport(0, 0, w, h);
+    float new_ra = float (w) / float (h);
+    ra = new_ra;
+    if(new_ra < 1.0) FOV = 2.0*atan(tan((float)M_PI/4)/new_ra);
+    projectTransform();
+  }
+  else{
+	left = -1*(w/2);
+	right = w/2;
+	bottom = -1*(w/2);
+	top = w/2;
+	projectTransform();
+	//Proj = glm::ortho(-radiEsc, radiEsc, -radiEsc, radiEsc, radiEsc, 3.0f*radiEsc);
+  } 
 }
 
 void MyGLWidget::createBuffersModel ()
@@ -183,8 +195,8 @@ void MyGLWidget::createBuffersTerraIParet ()
 
   // Definim el material del terra
   glm::vec3 amb(0.2,0,0.2);
-  glm::vec3 diff(0.2,0.2,0.6);
-  glm::vec3 spec(0,0,0);
+  glm::vec3 diff(0.2,0.2,0.8);
+  glm::vec3 spec(1.0,1.0,1.0);
   float shin = 100;
 
   // Fem que aquest material afecti a tots els vèrtexs per igual
@@ -288,15 +300,22 @@ void MyGLWidget::carregaShaders()
   transLoc = glGetUniformLocation (program->programId(), "TG");
   projLoc = glGetUniformLocation (program->programId(), "proj");
   viewLoc = glGetUniformLocation (program->programId(), "view");
+  
+  camLoc = glGetUniformLocation (program->programId(), "cam");
+  posFocus1Loc = glGetUniformLocation (program->programId(), "posFocus1");
+  posFocus2Loc = glGetUniformLocation (program->programId(), "posFocus2");
+  
 }
 
 void MyGLWidget::modelTransformModel2 ()
 {
   glm::mat4 TG(1.f);  // Matriu de transformació
-  TG = glm::translate(TG, glm::vec3(1.5, -2.0, 1.5));
+  TG = glm::translate(TG, posPatricio2);
   TG = glm::rotate(TG, -float(3*M_PI/4), glm::vec3(0.0, 1.0, 0.0));
   TG = glm::scale(TG, glm::vec3(escala2, escala2, escala2));
   TG = glm::translate(TG, -centreBasePatr);
+  
+  glUniform3fv(posFocus2Loc, 1, posPatricio2);
   
   glUniformMatrix4fv (transLoc, 1, GL_FALSE, &TG[0][0]);
 }
@@ -304,10 +323,12 @@ void MyGLWidget::modelTransformModel2 ()
 void MyGLWidget::modelTransformModel1 ()
 {
   glm::mat4 TG(1.f);  // Matriu de transformació
-  TG = glm::translate(TG, glm::vec3(-1.5, -2.0, 1.5));
+  TG = glm::translate(TG, posPatricio1);
   TG = glm::rotate(TG, float(3*M_PI/4), glm::vec3(0.0, 1.0, 0.0));
   TG = glm::scale(TG, glm::vec3(escala1, escala1, escala1));
   TG = glm::translate(TG, -centreBasePatr);
+  
+  glUniform3fv(posFocus1Loc, 1, posPatricio1);
   
   glUniformMatrix4fv (transLoc, 1, GL_FALSE, &TG[0][0]);
 }
@@ -323,7 +344,6 @@ void MyGLWidget::projectTransform ()
   glm::mat4 Proj;  // Matriu de projecció
   if (perspectiva)
     Proj = glm::perspective(FOV, ra, zn, zf);
-    //Proj = glm::perspective(float(M_PI/3.0f), 1.0f, radiEsc, 3.0f*radiEsc);
   else
     Proj = glm::ortho(-radiEsc, radiEsc, -radiEsc, radiEsc, radiEsc, 3.0f*radiEsc);
 
@@ -373,6 +393,36 @@ void MyGLWidget::keyPressEvent(QKeyEvent* event)
     case Qt::Key_O: { // canvia òptica entre perspectiva i axonomètrica
       perspectiva = !perspectiva;
       projectTransform ();
+      break;
+    }
+    case Qt::Key_F: { // canvia òptica entre perspectiva i axonomètrica
+      idFocus += 1;
+      if(idFocus == 3) idFocus = 0;
+      glUniform1i(camLoc, idFocus);
+      break;
+    }
+    case Qt::Key_Down: { // canvia òptica entre perspectiva i axonomètrica
+	  if(idFocus == 1){
+	    glm::vec3 posPatricio1aux = posPatricio1 + glm::vec3(-0.25, 0.0, 0.25);
+		posPatricio1 =  posPatricio1aux; 
+      }
+      else if(idFocus == 2){
+	    glm::vec3 posPatricio2aux = posPatricio2 + glm::vec3(0.25, 0.0, 0.25);
+	    
+	    posPatricio2 = posPatricio2aux;
+	  }
+      break;
+    }
+    case Qt::Key_Up: { // canvia òptica entre perspectiva i axonomètrica
+	  if(idFocus == 1){
+	    glm::vec3 posPatricio1aux = posPatricio1 - glm::vec3(-0.25, 0.0, 0.25);
+		posPatricio1 =  posPatricio1aux; 
+      }
+      else if(idFocus == 2){
+	    glm::vec3 posPatricio2aux = posPatricio2 - glm::vec3(0.25, 0.0, 0.25);
+	    
+	    posPatricio2 = posPatricio2aux;
+	  }
       break;
     }
     default: event->ignore(); break;

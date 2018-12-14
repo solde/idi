@@ -46,6 +46,7 @@ class MyGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     void modelTransformModel1 ();
     void modelTransformModel2 ();
     void calculaCapsaModel ();
+    void setFocus(glm::vec3 vecPosFocus, int id);
 
     // VAO names
     GLuint VAO_Patr;
@@ -55,7 +56,7 @@ class MyGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     // uniform locations
     GLuint transLoc, projLoc, viewLoc, camLoc;
     // attribute locations
-    GLuint vertexLoc, normalLoc, matambLoc, matdiffLoc, matspecLoc, matshinLoc, posFocus1Loc, posFocus2Loc;
+    GLuint vertexLoc, normalLoc, matambLoc, matdiffLoc, matspecLoc, matshinLoc, posFocus0Loc , posFocus1Loc, posFocus2Loc;
 
     // model
     Model patr;
@@ -74,7 +75,7 @@ class MyGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     
     int idFocus = 0;
     
-    int left, bottom, right, top;
+    float left, bottom, right, top;
 
     float angleY;
     bool perspectiva;

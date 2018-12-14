@@ -256,3 +256,11 @@ Es fan servir amb cose de dibuix
 ## Pointing devices
 
 >       "El problea d'agafr stylus es que l'has de deixar"
+
+## Usabilitat
+
+### Tests usabilitat
+
+- Determinar problemes d'usabilitat
+- Mesurar la "task performance"
+  - 

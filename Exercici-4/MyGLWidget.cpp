@@ -15,6 +15,19 @@ MyGLWidget::~MyGLWidget ()
     delete program;
 }
 
+void MyGLWidget::setFocus(glm::vec3 vecPosFocus, int FocusId){
+  vecPosFocus[1] = 1;
+
+  if(FocusId == 1){
+    glUniform3fv(posFocus1Loc, 1, &vecPosFocus[0]);
+    return;
+  }
+  if(FocusId == 2){
+    glUniform3fv(posFocus2Loc, 1, &vecPosFocus[0]);
+    return;
+  }
+}
+
 void MyGLWidget::initializeGL ()
 {
   // Cal inicialitzar l'ús de les funcions d'OpenGL
@@ -26,14 +39,18 @@ void MyGLWidget::initializeGL ()
   createBuffersModel();
   createBuffersTerraIParet();
 
+  posPatricio1 = glm::vec3(-1.5, -2.0, 1.5);
+  posPatricio2 = glm::vec3(1.5, -2.0, 1.5);
+
+  setFocus(posPatricio1, 1);
+  setFocus(posPatricio2, 2);
+
   iniEscena();
   iniCamera();
 }
 
 void MyGLWidget::iniEscena ()
 {
-  posPatricio1 = glm::vec3(-1.5, -2.0, 1.5);
-  posPatricio2 = glm::vec3(1.5, -2.0, 1.5);
   radiEsc = sqrt(12);  // sqrt(4+4+4)
 }
 
@@ -46,6 +63,11 @@ void MyGLWidget::iniCamera ()
   ra = 1.0f;
   zn = radiEsc;
   zf = 3.0f*zn;
+
+  left = -radiEsc;
+  right = radiEsc;
+  bottom = -radiEsc;
+  top = radiEsc;
 
   projectTransform ();
   viewTransform ();
@@ -87,21 +109,19 @@ void MyGLWidget::paintGL ()
 
 void MyGLWidget::resizeGL (int w, int h) 
 {
-  if(perspectiva){
-    glViewport(0, 0, w, h);
-    float new_ra = float (w) / float (h);
-    ra = new_ra;
-    if(new_ra < 1.0) FOV = 2.0*atan(tan((float)M_PI/4)/new_ra);
-    projectTransform();
+  glViewport(0, 0, w, h);
+  float new_ra = float (w) / float (h);
+  ra = new_ra;
+  if (new_ra > 1.0)
+  {
+    left = -radiEsc*new_ra;
+    right = radiEsc*new_ra;
+  } else
+  {
+    bottom = -radiEsc/new_ra;
+    top = radiEsc/new_ra;
   }
-  else{
-	left = -1*(w/2);
-	right = w/2;
-	bottom = -1*(w/2);
-	top = w/2;
-	projectTransform();
-	//Proj = glm::ortho(-radiEsc, radiEsc, -radiEsc, radiEsc, radiEsc, 3.0f*radiEsc);
-  } 
+  projectTransform();
 }
 
 void MyGLWidget::createBuffersModel ()
@@ -195,8 +215,8 @@ void MyGLWidget::createBuffersTerraIParet ()
 
   // Definim el material del terra
   glm::vec3 amb(0.2,0,0.2);
-  glm::vec3 diff(0.2,0.2,0.8);
-  glm::vec3 spec(1.0,1.0,1.0);
+  glm::vec3 diff(0.2,0.2,0.6);
+  glm::vec3 spec(0.9,0.9,0.9);
   float shin = 100;
 
   // Fem que aquest material afecti a tots els vèrtexs per igual
@@ -315,7 +335,7 @@ void MyGLWidget::modelTransformModel2 ()
   TG = glm::scale(TG, glm::vec3(escala2, escala2, escala2));
   TG = glm::translate(TG, -centreBasePatr);
   
-  glUniform3fv(posFocus2Loc, 1, posPatricio2);
+  //glUniform3fv(posFocus2Loc, 1, posPatricio2);
   
   glUniformMatrix4fv (transLoc, 1, GL_FALSE, &TG[0][0]);
 }
@@ -328,7 +348,7 @@ void MyGLWidget::modelTransformModel1 ()
   TG = glm::scale(TG, glm::vec3(escala1, escala1, escala1));
   TG = glm::translate(TG, -centreBasePatr);
   
-  glUniform3fv(posFocus1Loc, 1, posPatricio1);
+  //glUniform3fv(posFocus1Loc, 1, posPatricio1);
   
   glUniformMatrix4fv (transLoc, 1, GL_FALSE, &TG[0][0]);
 }
@@ -345,7 +365,7 @@ void MyGLWidget::projectTransform ()
   if (perspectiva)
     Proj = glm::perspective(FOV, ra, zn, zf);
   else
-    Proj = glm::ortho(-radiEsc, radiEsc, -radiEsc, radiEsc, radiEsc, 3.0f*radiEsc);
+    Proj = glm::ortho(left, right, bottom, top, zn, zf);
 
   glUniformMatrix4fv (projLoc, 1, GL_FALSE, &Proj[0][0]);
 }
@@ -404,26 +424,36 @@ void MyGLWidget::keyPressEvent(QKeyEvent* event)
     case Qt::Key_Down: { // canvia òptica entre perspectiva i axonomètrica
 	  if(idFocus == 1){
 	    glm::vec3 posPatricio1aux = posPatricio1 + glm::vec3(-0.25, 0.0, 0.25);
-		posPatricio1 =  posPatricio1aux; 
+		  if(posPatricio1aux[2] <= 1.5) {
+        posPatricio1 =  posPatricio1aux;
+        setFocus(posPatricio1, 1);
       }
-      else if(idFocus == 2){
+    }
+    else if(idFocus == 2){
 	    glm::vec3 posPatricio2aux = posPatricio2 + glm::vec3(0.25, 0.0, 0.25);
-	    
-	    posPatricio2 = posPatricio2aux;
+	    if(posPatricio2aux[2] <= 1.5) {
+        posPatricio2 = posPatricio2aux;
+        setFocus(posPatricio2, 2);
+      }
 	  }
       break;
     }
     case Qt::Key_Up: { // canvia òptica entre perspectiva i axonomètrica
-	  if(idFocus == 1){
-	    glm::vec3 posPatricio1aux = posPatricio1 - glm::vec3(-0.25, 0.0, 0.25);
-		posPatricio1 =  posPatricio1aux; 
+      if(idFocus == 1){
+        glm::vec3 posPatricio1aux = posPatricio1 - glm::vec3(-0.25, 0.0, 0.25);
+        if(posPatricio1aux[2] >= -1.5) {
+          posPatricio1 =  posPatricio1aux;
+          setFocus(posPatricio1, 1);  
+        }
       }
       else if(idFocus == 2){
-	    glm::vec3 posPatricio2aux = posPatricio2 - glm::vec3(0.25, 0.0, 0.25);
-	    
-	    posPatricio2 = posPatricio2aux;
-	  }
-      break;
+        glm::vec3 posPatricio2aux = posPatricio2 - glm::vec3(0.25, 0.0, 0.25);
+        if(posPatricio2aux[2] >= -1.5){
+          posPatricio2 = posPatricio2aux;
+          setFocus(posPatricio2, 2);  
+        }
+      }
+        break;
     }
     default: event->ignore(); break;
   }

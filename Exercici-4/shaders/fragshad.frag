@@ -4,7 +4,6 @@ in vec3 fcolor;
 out vec4 FragColor;
 
 in vec3 normalSCOF;
-in vec3 LF;
 in vec4 vertSCOF;
 
 in vec3 matambF;
@@ -12,9 +11,17 @@ in vec3 matdiffF;
 in vec3 matspecF;
 in float matshinF;
 
+uniform mat4 proj;
+uniform mat4 view;
+uniform mat4 TG;
+uniform int cam;
+
 vec3 colFocus = vec3(0.8, 0.8, 0.8);
 vec3 llumAmbient = vec3(0.2, 0.2, 0.2);
-vec3 posFocus = vec3(1, 0, 1);  // en SCA
+vec3 posFocus = vec3(0, 0, 0);  // en SCA
+
+uniform vec3 posFocus1;
+uniform vec3 posFocus2;
 
 vec3 Lambert (vec3 NormSCO, vec3 L) 
 {
@@ -55,5 +62,16 @@ vec3 Phong (vec3 NormSCO, vec3 L, vec4 vertSCO)
 
 void main()
 {	
-	FragColor = vec4(Phong(normalSCOF, LF, vertSCOF),1);	
+  vec4 focusSCO;
+    if(cam == 1){
+		  focusSCO = view * vec4(posFocus1,1.0);
+	  }
+    if(cam == 2){
+		  focusSCO = view * vec4(posFocus2,1.0); 
+	  }
+    if(cam == 0){
+		  focusSCO = vec4(posFocus,1.0);
+	  }
+  vec3 L = normalize(focusSCO.xyz - vertSCOF.xyz);
+	FragColor = vec4(Phong(normalSCOF, L, vertSCOF),1);	
 }

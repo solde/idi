@@ -26,6 +26,13 @@ void MyGLWidget::initializeGL ()
   createBuffersPatricio();
   createBuffersTerraIParet();
 
+  bottom = -radiEsc;
+  top = radiEsc;
+  left = -radiEsc;
+  right = radiEsc;
+
+  ra = 1.0f;
+
   iniEscena();
   iniCamera();
 }
@@ -33,7 +40,7 @@ void MyGLWidget::initializeGL ()
 void MyGLWidget::iniEscena ()
 {
   radiEsc = sqrt(5);  
-  zn = sqrt(5);
+  zn = sqrt(3);
   zf = sqrt(3)*4;
 }
 
@@ -66,10 +73,12 @@ void MyGLWidget::paintGL ()
 
   modelTransformPatricio ();
 
-  // Activem el VAO per a pintar el Patricio 2
-  /*glBindVertexArray (VAO_Patr);
+  glDrawArrays(GL_TRIANGLES, 0, patr.faces().size()*3);
 
-  modelTransformPatricio2();*/
+  // Activem el VAO per a pintar el Patricio 2
+  glBindVertexArray (VAO_Patr);
+
+  modelTransformPatricio2();
 
   // Pintem l'escena
   glDrawArrays(GL_TRIANGLES, 0, patr.faces().size()*3);
@@ -82,7 +91,15 @@ void MyGLWidget::resizeGL (int w, int h)
   glViewport(0, 0, w, h);
   float new_ra = float (w) / float (h);
   ra = new_ra;
-  if(new_ra < 1.0) FOV = 2.0*atan(tan((float)M_PI/4)/new_ra);
+  if (new_ra > 1.0)
+  {
+    left = -radiEsc*new_ra;
+    right = radiEsc*new_ra;
+  } else
+  {
+    bottom = -radiEsc/new_ra;
+    top = radiEsc/new_ra;
+  }
   projectTransform();
 }
 
@@ -293,13 +310,19 @@ void MyGLWidget::modelTransformPatricio ()
   glUniformMatrix4fv (transLoc, 1, GL_FALSE, &TG[0][0]);
 }
 
+void MyGLWidget::setFOV(int new_fov){
+  FOV = float(new_fov)*(M_PI/180.0f);
+  projectTransform();
+}
+
 void MyGLWidget::modelTransformPatricio2 ()
 {
   glm::mat4 TG(1.f);  // Matriu de transformació
+  TG = glm::translate(TG, glm::vec3(0.0,2.0,0.0));
+  TG = glm::rotate(TG, float(M_PI), glm::vec3(1, 0, 0));
+  TG = glm::rotate(TG, float(M_PI), glm::vec3(0, 1, 0));
   TG = glm::scale(TG, glm::vec3(escala, escala, escala));
   TG = glm::translate(TG, -centrePatr);
-  TG = glm::rotate(TG, float(M_PI), glm::vec3(1, 0, 0));
-  TG = glm::translate(TG, glm::vec3(0.0,3.0,0.0));
   
   glUniformMatrix4fv (transLoc, 1, GL_FALSE, &TG[0][0]);
 }
@@ -316,7 +339,7 @@ void MyGLWidget::projectTransform ()
   if (perspectiva)
     Proj = glm::perspective(FOV, ra, zn, zf);
   else
-    Proj = glm::ortho(-radiEsc, radiEsc, -radiEsc, radiEsc, radiEsc, 3.0f*radiEsc);
+    Proj = glm::ortho(left, right, bottom, top, zn, zf);
 
   glUniformMatrix4fv (projLoc, 1, GL_FALSE, &Proj[0][0]);
 }
@@ -380,6 +403,11 @@ void MyGLWidget::mousePressEvent (QMouseEvent *e)
   {
     DoingInteractive = ROTATE;
   }
+  if (e->button() & Qt::RightButton &&
+      ! (e->modifiers() & (Qt::ShiftModifier|Qt::AltModifier|Qt::ControlModifier)))
+  {
+    DoingInteractive = ZOOM;
+  }
 }
 
 void MyGLWidget::mouseReleaseEvent( QMouseEvent *)
@@ -396,6 +424,13 @@ void MyGLWidget::mouseMoveEvent(QMouseEvent *e)
     // Fem la rotació
     angleY += (e->x() - xClick) * M_PI / 180.0;
     viewTransform ();
+  }
+  else if (DoingInteractive == ZOOM)
+  {
+    float new_FOV = FOV;
+    new_FOV += (e->y() - yClick) * M_PI / 180.0;
+    if(new_FOV > 0.0 and new_FOV < M_PI) FOV = new_FOV;
+    projectTransform();
   }
 
   xClick = e->x();

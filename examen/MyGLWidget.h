@@ -46,6 +46,7 @@ class MyGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     void modelTransformPatricio ();
     void modelTransformPatricio2();
     void calculaCapsaModel ();
+    void setFOV(int new_fov);
 
     // VAO i VBO names
     GLuint VAO_Patr;
@@ -65,11 +66,13 @@ class MyGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     // radi de l'escena
     float radiEsc;
 
-    typedef  enum {NONE, ROTATE} InteractiveAction;
+    float top, bottom, left, right;
+
+    typedef  enum {NONE, ROTATE, ZOOM} InteractiveAction;
     InteractiveAction DoingInteractive;
     int xClick, yClick;
     float angleY;
     bool perspectiva;
-    float FOV = M_PI/3.0, ra = 1.0, zn, zf; 
+    float FOV = (M_PI)/3.0, ra = 1.0, zn, zf; 
 };
 

@@ -33,8 +33,8 @@ out vec3 fcolor;
 void main()
 {	
 
-    vec4 vertSCO = (view * TG * vec4 (vertex, 1.0));              //SCO
-    mat3 normalMatrix = inverse (transpose (mat3 (view * TG)));   //
+    vec4 vertSCO = (view * TG * vec4 (vertex, 1.0));
+    mat3 normalMatrix = inverse (transpose (mat3 (view * TG)));
     vec3 normalSCO =  normalize(normalMatrix * normal);
 
     vertSCOF = vertSCO;

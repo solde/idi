@@ -76,7 +76,6 @@
    <header>MyGLWidget.h</header>
    <container>1</container>
    <slots>
-    <signal>sendFOV(int)</signal>
     <slot>setFOV(int)</slot>
    </slots>
   </customwidget>
@@ -100,34 +99,18 @@
    </hints>
   </connection>
   <connection>
-   <sender>widget</sender>
-   <signal>sendFOV(int)</signal>
-   <receiver>verticalSlider</receiver>
-   <slot>setValue(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>614</x>
-     <y>259</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>881</x>
-     <y>263</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>verticalSlider</sender>
-   <signal>valueChanged(int)</signal>
+   <signal>sliderMoved(int)</signal>
    <receiver>widget</receiver>
    <slot>setFOV(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>882</x>
-     <y>423</y>
+     <x>890</x>
+     <y>419</y>
     </hint>
     <hint type="destinationlabel">
-     <x>796</x>
-     <y>422</y>
+     <x>803</x>
+     <y>419</y>
     </hint>
    </hints>
   </connection>

@@ -17,6 +17,12 @@ class MyGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
   public:
     MyGLWidget (QWidget *parent=0);
     ~MyGLWidget ();
+  public
+    slots:
+      void setFOV(int new_fov);
+
+    signals:
+      void sendFOV(int new_value);
 
   protected:
     // initializeGL - Aqui incluim les inicialitzacions del contexte grafic.
@@ -46,7 +52,6 @@ class MyGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     void modelTransformPatricio ();
     void modelTransformPatricio2();
     void calculaCapsaModel ();
-    void setFOV(int new_fov);
 
     // VAO i VBO names
     GLuint VAO_Patr;

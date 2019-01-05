@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>996</width>
+    <width>819</width>
     <height>726</height>
    </rect>
   </property>
@@ -21,19 +21,6 @@
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QSlider" name="verticalSlider">
-     <property name="minimum">
-      <number>1</number>
-     </property>
-     <property name="maximum">
-      <number>179</number>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
      </property>
     </widget>
    </item>
@@ -75,10 +62,6 @@
    <extends>QWidget</extends>
    <header>MyGLWidget.h</header>
    <container>1</container>
-   <slots>
-    <signal>sendFOV(int)</signal>
-    <slot>setFOV(int)</slot>
-   </slots>
   </customwidget>
  </customwidgets>
  <resources/>
@@ -90,44 +73,12 @@
    <slot>close()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>985</x>
-     <y>715</y>
+     <x>796</x>
+     <y>596</y>
     </hint>
     <hint type="destinationlabel">
      <x>839</x>
      <y>529</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>widget</sender>
-   <signal>sendFOV(int)</signal>
-   <receiver>verticalSlider</receiver>
-   <slot>setValue(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>614</x>
-     <y>259</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>881</x>
-     <y>263</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>verticalSlider</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>widget</receiver>
-   <slot>setFOV(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>882</x>
-     <y>423</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>796</x>
-     <y>422</y>
     </hint>
    </hints>
   </connection>

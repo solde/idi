@@ -328,11 +328,11 @@ void MyGLWidget::modelTransformTerra ()
 
 void MyGLWidget::projectTransform ()
 {
+  //std::cout << FOV << std::endl;
+  glm::mat4 Proj;  // Matriu de projecció
   int value = int(FOV/(M_PI/180.0f));
   std::cout << value << std::endl;
   emit sendFOV(value);
-  //std::cout << FOV << std::endl;
-  glm::mat4 Proj;  // Matriu de projecció
   if (perspectiva){
     Proj = glm::perspective(FOV, ra, zn, zf);
   }
@@ -353,6 +353,7 @@ void MyGLWidget::viewTransform ()
 {
   glm::mat4 View;  // Matriu de posició i orientació
   View = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, -2*radiEsc));
+  View = glm::rotate(View, -angleX, glm::vec3(1, 0, 0));
   View = glm::rotate(View, -angleY, glm::vec3(0, 1, 0));
 
   glUniformMatrix4fv (viewLoc, 1, GL_FALSE, &View[0][0]);
@@ -428,6 +429,7 @@ void MyGLWidget::mouseMoveEvent(QMouseEvent *e)
   {
     // Fem la rotació
     angleY += (e->x() - xClick) * M_PI / 180.0;
+    angleX += (e->y() - yClick) * M_PI / 180.0;
     viewTransform ();
   }
   else if (DoingInteractive == ZOOM)

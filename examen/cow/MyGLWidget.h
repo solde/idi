@@ -17,6 +17,12 @@ class MyGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
   public:
     MyGLWidget (QWidget *parent=0);
     ~MyGLWidget ();
+  public
+    slots:
+      void setFOV(int new_fov);
+
+    signals:
+      void sendFOV(int new_value);
 
   protected:
     // initializeGL - Aqui incluim les inicialitzacions del contexte grafic.
@@ -44,12 +50,14 @@ class MyGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     void projectTransform ();
     void viewTransform ();
     void modelTransformTerra ();
-    void modelTransformCow ();
     void modelTransformPatricio ();
+    void modelTransformCow();
     void calculaCapsaModel ();
+    void calculaCapsaModelCow ();
 
     // VAO i VBO names
-    GLuint VAO_Patr, VAO_Cow;
+    GLuint VAO_Patr;
+    GLuint VAO_Cow;
     GLuint VAO_Terra;
     // Program
     QOpenGLShaderProgram *program;
@@ -59,17 +67,25 @@ class MyGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     GLuint vertexLoc, normalLoc, matambLoc, matdiffLoc, matspecLoc, matshinLoc;
 
     // model
-    Model patr, cow;
+    Model patr;
+    Model cow;
     // paràmetres calculats a partir de la capsa contenidora del model
-    glm::vec3 centreCow, centrePatr;
-    float escalaCow, escalaPatr;
+    glm::vec3 centrePatr, centreCow, baseCow, basePatr;
+    float escala, escalaCow;
     // radi de l'escena
     float radiEsc;
 
-    typedef  enum {NONE, ROTATE} InteractiveAction;
+    float top, bottom, left, right;
+    
+    glm::vec3 OBS, VRP, UP;
+    
+    int nr;
+
+    typedef  enum {NONE, ROTATE, ZOOM} InteractiveAction;
     InteractiveAction DoingInteractive;
     int xClick, yClick;
-    float angleY;
+    float angleY, angleX;
     bool perspectiva;
+    float FOV = (M_PI)/3.0, ra = 1.0, zn, zf; 
 };
 

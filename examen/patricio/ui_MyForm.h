@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'MyForm.ui'
 **
-** Created by: Qt User Interface Compiler version 5.6.3
+** Created by: Qt User Interface Compiler version 5.6.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -53,7 +53,6 @@ public:
 
         verticalSlider = new QSlider(MyForm);
         verticalSlider->setObjectName(QStringLiteral("verticalSlider"));
-        verticalSlider->setMinimum(1);
         verticalSlider->setMaximum(179);
         verticalSlider->setOrientation(Qt::Vertical);
 
@@ -81,15 +80,16 @@ public:
 
         retranslateUi(MyForm);
         QObject::connect(pushButton, SIGNAL(clicked()), MyForm, SLOT(close()));
-        QObject::connect(verticalSlider, SIGNAL(sliderMoved(int)), widget, SLOT(setFOV(int)));
+        QObject::connect(verticalSlider, SIGNAL(valueChanged(int)), widget, SLOT(setFOV(int)));
+        QObject::connect(widget, SIGNAL(sendFOV(int)), verticalSlider, SLOT(setValue(int)));
 
         QMetaObject::connectSlotsByName(MyForm);
     } // setupUi
 
     void retranslateUi(QWidget *MyForm)
     {
-        MyForm->setWindowTitle(QApplication::translate("MyForm", "Form", Q_NULLPTR));
-        pushButton->setText(QApplication::translate("MyForm", "&Sortir", Q_NULLPTR));
+        MyForm->setWindowTitle(QApplication::translate("MyForm", "Form", 0));
+        pushButton->setText(QApplication::translate("MyForm", "&Sortir", 0));
     } // retranslateUi
 
 };

@@ -9,4 +9,5 @@ class MyForm : public QWidget
   
   private:
     Ui::MyForm ui;
+    
 };

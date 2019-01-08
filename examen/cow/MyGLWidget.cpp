@@ -491,6 +491,9 @@ void MyGLWidget::keyPressEvent(QKeyEvent* event)
       ++nr;
       modelTransformCow();
       modelTransformPatricio();
+      glm::vec3 rotaVRP(1*cos(-(nr*M_PI/6.0)), -0.375, 1*sin(-(nr*M_PI/6.0)));
+      VRP = rotaVRP;
+      viewTransform();
       break;
     }
     default: event->ignore(); break;
